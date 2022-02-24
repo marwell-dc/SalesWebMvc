@@ -21,13 +21,13 @@ namespace SalesWebMvc.Models
 
         [Required(ErrorMessage = "{0} Required.")]
         [Display(Name = "Birth Date")]
-        [Range(100.00, 50000.00, ErrorMessage = "{0} must be from {1} to {2}")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime BirthDate { get; set; }
 
         [Required(ErrorMessage = "{0} Required")]
         [Display(Name = "Base Salary")]
+        [Range(100.00, 50000.00, ErrorMessage = "{0} must be from {1} to {2}")]
         [DisplayFormat(DataFormatString = "{0:F2}")]
         public double BaseSalary { get; set; }
         
