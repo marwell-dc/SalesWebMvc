@@ -36,6 +36,13 @@ namespace SalesWebMvc.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Seller seller)
         {
+            if (!ModelState.IsValid)
+            {
+                List<Department> departments = _departmentService.FindAll();
+                SellerFormViewModel viewModel = new SellerFormViewModel { Seller = seller, Departments = departments };
+
+                return View(viewModel);
+            }
             _sellersService.Insert(seller);
             return RedirectToAction(nameof(Index));
         }
@@ -89,15 +96,15 @@ namespace SalesWebMvc.Controllers
                 return RedirectToAction(nameof(Error), new { message = "Id not provided!" });
             }
 
-            var obj = _sellersService.FindById(id.Value);
+            var seller = _sellersService.FindById(id.Value);
 
-            if (obj == null)
+            if (seller == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Id not found!" });
             }
 
             List<Department> departments = _departmentService.FindAll();
-            SellerFormViewModel viewModel = new SellerFormViewModel { Seller = obj, Departments = departments };
+            SellerFormViewModel viewModel = new SellerFormViewModel { Seller = seller, Departments = departments };
 
             return View(viewModel);
         }
@@ -106,7 +113,15 @@ namespace SalesWebMvc.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, Seller seller)
         {
-            if(seller.Id != id)
+            if (!ModelState.IsValid)
+            {
+                List<Department> departments = _departmentService.FindAll();
+                SellerFormViewModel viewModel = new SellerFormViewModel { Seller = seller, Departments = departments };
+
+                return View(viewModel);
+            }
+
+            if (seller.Id != id)
             {
                 return RedirectToAction(nameof(Error), new { message = "Id not mismatch!" });
             }
